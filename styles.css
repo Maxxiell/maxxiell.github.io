@@ -1,0 +1,338 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+}
+
+/* Custom Scrollbar */ 
+::-webkit-scrollbar { 
+    width: 12px; /* Adjust width as needed */
+}
+::-webkit-scrollbar-track { 
+    background: #151516; /* Scrollbar track color */ 
+}
+::-webkit-scrollbar-thumb { 
+    background-color: #777777; /* Scrollbar thumb color */ 
+    border-radius: 6px; /* Scrollbar thumb border radius */ 
+    border: 5px solid #151516; /* Add padding around thumb */
+}
+
+body {
+    display: flex;
+    margin-top: 23px;
+    flex-direction: column;
+    background-color: #151516; /* Background color */
+    color: #fff; /* Text color for contrast */
+    min-height: 100vh;
+}
+.content-wrapper span{
+    color: rgb(191, 219, 243);
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+
+.wrapper {
+    max-width: 1080px;
+    width: 100%;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #151516;
+    color: #fff;
+    height: 100vh;
+    padding: 20px;
+    padding-top: 25px;
+    border-right: 1px solid #262627;
+    width: 250px;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the sidebar content */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+}
+
+.sidebar.show {
+    transform: translateX(0);
+}
+
+.sidebar h1 {
+    margin-top: 5px;
+    font-size: 1.2rem; /* Adjust font size */
+    text-align: center;
+}
+
+.sidebar h2.subheading {
+    margin-top: 5px;
+    font-size: 0.9rem; /* Adjust font size for subheading */
+    text-align: center;
+    color: dodgerblue;
+}
+
+.sidebar img.profile-picture {
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px;
+    width: 80px;
+}
+
+.menu-toggle {
+    background-color: #444;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    transition: 0.3s;
+    border-radius: 15px; /* Border radius for menu button */
+}
+.menu-toggle:hover{
+    background-color: rgb(55, 69, 80);
+}
+.menu-toggle:active{
+    background-color: dodgerblue;
+}
+
+.menu-toggle i.material-icons {
+    font-size: 24px;
+}
+
+.menu {
+    list-style: none;
+    display: none;
+    flex-direction: column;
+    align-items: center; /* Center the menu items */
+    margin-top: 20px; /* Move sections down by 20px */
+}
+
+.menu.show {
+    display: flex; /* Show menu when toggled */
+}
+
+.menu li {
+    margin-bottom: 10px;
+}
+
+.menu li a {
+    color: #fff;
+    text-decoration: none; /* Remove underline text decoration */
+    transition: color 0.3s ease;
+}
+
+.menu li a:hover,
+.menu li a.active {
+    color: dodgerblue; /* Hover and active effect to Dodger Blue */
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.content section {
+    margin-bottom: 40px;
+    scroll-margin-top: 20px; /* Adjust for sticky sidebar */
+    scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+.content h2 {
+    border-bottom: 2px solid #333;
+    color: #ffffff;
+    font-size: 1.1rem;
+    width: 30%;
+    margin: auto;
+    text-align: center;
+    margin-top: 58px;
+    margin-bottom: 10px;
+    background-color: #333; /* Background color for header */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.section-content {
+    height: 500px;
+    background: linear-gradient(to bottom, #252525, #414147); /* Gradient background */
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    overflow: auto;
+}
+.section-content::-webkit-scrollbar {
+    width: 2px;
+}
+.section-content::-webkit-scrollbar-track {
+    display: none;
+}
+.section-content::-webkit-scrollbar-thumb {
+    border: none;
+    position: relative;
+    top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #181818;
+    color: #fff;
+}
+
+.send-button {
+    background-color: #70eb8b;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: dodgerblue;
+}
+
+#social {
+    background-color: #151516;  /* Black background color */
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-content {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-icon {
+    color: #fff;
+    font-size: 2rem;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: dodgerblue;
+}
+
+footer {
+    background-color: #151516;  /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center;
+    font-size: .8rem;
+    padding: 20px;
+    max-height: 100px;
+    width: 100%;
+    position: relative;
+}
+
+@media (min-width: 1081px) {
+    .wrapper {
+        justify-content: center;
+    }
+}
+
+@media (min-width: 769px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .menu {
+        display: flex;
+    }
+    
+    .menu-toggle {
+        display: none;
+    }
+    .content-wrapper img.profile-picture2{
+        display: none;
+    }
+    .content-wrapper h1.h1mobile{
+        display: none;
+    }
+    .content-wrapper h4.h4mobile{
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        padding-top: 108px; /* Adjust padding to remove overlap */
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        height: auto;
+        width: 100%;
+        transform: translateX(0); /* Keep sidebar visible by default */
+        position: fixed;
+        top: 0;
+        justify-content: center;
+        padding: 20px 0; /* Adjust padding to center the menu button */
+        z-index: 1000; /* Ensure the sidebar is above other content */
+    }
+
+  
+    .sidebar img.profile-picture, .sidebar h1, .sidebar h2.subheading {
+        display: none;/* Hide elements in mobile view */
+        flex-direction: row;
+    }
+    .content-wrapper img.profile-picture2{
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto 20px;
+        width: 100px;
+    }
+    .content-wrapper h1.h1mobile{
+        text-align: center;
+    }
+    .content-wrapper h4.h4mobile{
+        text-align: center;
+        font-size: 1.1rem;
+        color: dodgerblue;
+    }
+  
+    .menu {
+        display: none;
+    }
+
+    .menu.show {
+        display: flex; /* Show menu when toggled */
+    }
+
+    .content-wrapper {
+        margin
