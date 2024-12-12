@@ -98,7 +98,7 @@ body {
     border-radius: 15px; /* Border radius for menu button */
 }
 .menu-toggle:hover{
-    background-color: rgb(55, 69, 80);
+    background-color: dodgerblue;
 }
 .menu-toggle:active{
     background-color: dodgerblue;
