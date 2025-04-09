@@ -7,7 +7,7 @@
 }
 
 body {
-  background: #e2d5ca;
+  background: #0b0c0c;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -16,8 +16,8 @@ body {
 
 }
 body::selection {
-  background: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
+  background: #5eff01;
+  color: #15743e;
 }
 @keyframes start {
   from {
@@ -31,26 +31,21 @@ to {
 }
 
 .header {
-  height: 250px;
-  width: 700px;
+  height: auto;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: min(700px, 95%);
   display: flex;
-  background: rgb(95, 88, 81);
-  border-radius: 10px;
-  border-top-left-radius: 50px;
-  border-bottom-right-radius: 110px;
+  background: linear-gradient(to right, rgba(1, 1, 1, 0), rgb(13, 15, 15),rgba(1, 1, 1, 0));
   padding: 20px;
   animation: start .4s ease-out;
   transition: all .4s;
-
-}
-.header:hover {
-  background: linear-gradient(to right, #2b1c0c, #33271b41);
-  opacity: .6;
-  scale: 100.5%;
 }
 .centered {
-  width: 450px;
-  padding-left: 8px;  
+  height: auto;
+  width: min(350px, 70%);
+  padding-left: 8px;
+  flex-grow: 1;  
 }
 .centered h2 {
   text-align: start;
@@ -63,9 +58,6 @@ to {
   margin-top: 6px;
   font-weight: 400;
 }
-.header:hover .centered h3 {
-  color: rgb(48, 35, 22);
-}
 .centered p a{
   text-align: start;
   margin-top: 30px;
@@ -74,21 +66,21 @@ to {
   text-decoration: none;
   padding: 6px;
   margin-left: -6px;
+  border-radius: 4px;
 }
 .centered p a:hover {
-  background: #2b1c0c;
-  color: white;
-  border-radius: 4px;
+  background: #5eff01;
+  color: #15743e;
 }
 .centered p a:active {
   background: black;
 }
 .left1 {
-  width: 250px;
-  height: 210px;
+  width: auto;
+  height: auto;
   display: flex;
-  justify-content: center;
-  border-right: 1px solid white;
+  padding-left: 8px;
+  justify-content: start;
 }
 .left1 h1 {
   font-size: 4rem;
@@ -96,11 +88,12 @@ to {
   font-style: italic;
 }
 .left1 p {
+  font-size: 1rem;
   color: #e5e5eb;
   margin-left: -3px;
 }
-.footer {
-  bottom: 0;
-  position: absolute;
-
+.tooltip {
+  position: relative;
+  cursor: pointer;
+  transition-delay: 1s;
 }
