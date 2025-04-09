@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: "Geist", sans-serif;
+}
+
+body {
+  background: #e2d5ca;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+
+}
+body::selection {
+  background: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+}
+@keyframes start {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+}
+to {
+    transform: translateY(0);
+    opacity: 1;
+}
+}
+
+.header {
+  height: 250px;
+  width: 700px;
+  display: flex;
+  background: rgb(95, 88, 81);
+  border-radius: 10px;
+  border-top-left-radius: 50px;
+  border-bottom-right-radius: 110px;
+  padding: 20px;
+  animation: start .4s ease-out;
+  transition: all .4s;
+
+}
+.header:hover {
+  background: linear-gradient(to right, #2b1c0c, #33271b41);
+  opacity: .6;
+  scale: 100.5%;
+}
+.centered {
+  width: 450px;
+  padding-left: 8px;  
+}
+.centered h2 {
+  text-align: start;
+  font-weight: 500;
+  color: #e5e5eb;
+}
+.centered h3 {
+  color: #7e7e83;
+  margin-bottom: 10px;
+  margin-top: 6px;
+  font-weight: 400;
+}
+.header:hover .centered h3 {
+  color: rgb(48, 35, 22);
+}
+.centered p a{
+  text-align: start;
+  margin-top: 30px;
+  color: #e5e5eb;
+  font-weight: 400;
+  text-decoration: none;
+  padding: 6px;
+  margin-left: -6px;
+}
+.centered p a:hover {
+  background: #2b1c0c;
+  color: white;
+  border-radius: 4px;
+}
+.centered p a:active {
+  background: black;
+}
+.left1 {
+  width: 250px;
+  height: 210px;
+  display: flex;
+  justify-content: center;
+  border-right: 1px solid white;
+}
+.left1 h1 {
+  font-size: 4rem;
+  color: #e5e5eb;
+  font-style: italic;
+}
+.left1 p {
+  color: #e5e5eb;
+  margin-left: -3px;
+}
+.footer {
+  bottom: 0;
+  position: absolute;
+
+}
