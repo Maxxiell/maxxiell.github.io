@@ -1219,9 +1219,10 @@ body::selection {
   .aboutsection {
     flex-direction: column;
     margin-top: 0; /* Remove top margin so page starts at top */
-    margin-right: 5%;
-    margin-left: 5%;
-    width: 90%;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 25px; /* Add bottom margin for mobile */
+    width: 95%;
     height: auto;
     overflow: visible;
   }
@@ -1350,6 +1351,9 @@ body::selection {
     height: auto;
     overflow: visible;
     margin-top: 0; /* Remove top margin so page starts at top */
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 25px; /* Add bottom margin for mobile */
   }
   
   .aboutimg {
