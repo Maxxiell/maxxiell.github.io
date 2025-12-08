@@ -113,6 +113,7 @@
       try {
         const formData = new FormData(form);
         // Add reCAPTCHA response to form data
+        // Note: Formspree requires reCAPTCHA secret key to be configured in their dashboard
         formData.append('g-recaptcha-response', recaptchaResponse);
         
         const response = await fetch(form.action, {
@@ -122,6 +123,9 @@
             'Accept': 'application/json'
           }
         });
+        
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
         
         if (response.ok) {
           // Success
@@ -133,12 +137,23 @@
           form.reset();
           grecaptcha.reset(); // Reset reCAPTCHA
         } else {
-          const data = await response.json();
-          throw new Error(data.error || 'Something went wrong');
+          // Try to get error details
+          let errorMessage = 'Something went wrong';
+          try {
+            const data = await response.json();
+            errorMessage = data.error || data.message || errorMessage;
+            console.error('Formspree error:', data);
+          } catch (parseError) {
+            const text = await response.text();
+            console.error('Formspree error response:', text);
+            errorMessage = `Server error: ${response.status} ${response.statusText}`;
+          }
+          throw new Error(errorMessage);
         }
       } catch (error) {
-        // Error
-        formStatus.textContent = 'Oops! There was a problem sending your message. Please try again.';
+        // Error - show more details in console
+        console.error('Form submission error:', error);
+        formStatus.textContent = `Oops! There was a problem: ${error.message}. Please try again.`;
         formStatus.style.display = 'block';
         formStatus.style.background = 'rgba(254, 119, 51, 0.2)';
         formStatus.style.color = '#fe7733';
