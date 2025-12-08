@@ -59,10 +59,40 @@
 <script>
   let vantaEffect = null;
   
+  // Check if WebGL is supported (Edge compatibility)
+  function isWebGLSupported() {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      return !!gl;
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  // Detect Edge browser
+  function isEdgeBrowser() {
+    return navigator.userAgent.indexOf('Edg') > -1 || navigator.userAgent.indexOf('Edge') > -1;
+  }
+  
   function initVanta() {
-    // Get current theme
+    // Get current theme - ensure proper detection for Edge browser
     const body = document.body;
-    const currentTheme = body.getAttribute('data-theme') || 'dark';
+    let currentTheme = body.getAttribute('data-theme');
+    
+    // Fallback theme detection for Edge compatibility
+    if (!currentTheme) {
+      // Check localStorage
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme) {
+        currentTheme = storedTheme;
+        body.setAttribute('data-theme', storedTheme);
+      } else {
+        // Default to dark mode
+        currentTheme = 'dark';
+        body.setAttribute('data-theme', 'dark');
+      }
+    }
     
     // Set background color based on theme (matching navbar)
     // Dark mode: rgb(12, 12, 12) = #0c0c0c = 0x0c0c0c
@@ -75,40 +105,161 @@
     const dotColor = currentTheme === 'dark' ? 0x949494 : 0x535353;
     const dotColor2 = currentTheme === 'dark' ? 0xA6A6A6 : 0x484848;
     
-    // Destroy existing effect if it exists
-    if (vantaEffect) {
-      vantaEffect.destroy();
+    // Set CSS background color as fallback for Edge browser
+    const vantaElement = document.getElementById('vanta-background');
+    if (vantaElement) {
+      if (currentTheme === 'dark') {
+        vantaElement.style.backgroundColor = '#0c0c0c';
+        vantaElement.style.background = '#0c0c0c';
+      } else {
+        vantaElement.style.backgroundColor = '#ffffff';
+        vantaElement.style.background = '#ffffff';
+      }
     }
     
-    // Create new effect with theme-appropriate background and dots
-    vantaEffect = VANTA.DOTS({
-      el: "#vanta-background",
-      mouseControls: true,
-      touchControls: true,
-      gyroControls: false,
-      minHeight: 200.00,
-      minWidth: 200.00,
-      scale: 1.00,
-      scaleMobile: 1.00,
-      color: dotColor,
-      color2: dotColor2,
-      backgroundColor: bgColor,
-      size: 1.10,
-      spacing: 19.00,
-      showLines: false
-    });
+    // Also set body background as fallback
+    if (currentTheme === 'dark') {
+      body.style.backgroundColor = '#0c0c0c';
+    } else {
+      body.style.backgroundColor = '#ffffff';
+    }
+    
+    // Check WebGL support before initializing Vanta
+    if (!isWebGLSupported()) {
+      console.warn('WebGL not supported, Vanta dots will not render');
+      return;
+    }
+    
+    // Destroy existing effect if it exists
+    if (vantaEffect) {
+      try {
+        vantaEffect.destroy();
+      } catch (e) {
+        console.warn('Error destroying vanta effect:', e);
+      }
+      vantaEffect = null;
+    }
+    
+    // Wait for Three.js and VANTA to be available (Edge compatibility)
+    function waitForVanta() {
+      if (typeof THREE !== 'undefined' && typeof VANTA !== 'undefined' && VANTA.DOTS) {
+        try {
+          // Create new effect with theme-appropriate background and dots
+          vantaEffect = VANTA.DOTS({
+            el: "#vanta-background",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: dotColor,
+            color2: dotColor2,
+            backgroundColor: bgColor,
+            size: 1.10,
+            spacing: 19.00,
+            showLines: false,
+            // Edge browser compatibility
+            forceAnimate: true,
+            // Additional Edge fixes
+            THREE: THREE
+          });
+          
+          // Force render update for Edge
+          if (vantaEffect && vantaEffect.renderer) {
+            setTimeout(() => {
+              try {
+                if (vantaEffect.renderer && vantaEffect.renderer.render) {
+                  vantaEffect.renderer.render(vantaEffect.scene, vantaEffect.camera);
+                }
+              } catch (e) {
+                console.warn('Error forcing render:', e);
+              }
+            }, 200);
+          }
+          
+          // Force update background color after initialization (Edge fix)
+          if (vantaEffect && vantaEffect.setOptions) {
+            setTimeout(() => {
+              try {
+                vantaEffect.setOptions({
+                  backgroundColor: bgColor
+                });
+              } catch (e) {
+                console.warn('Error updating vanta options:', e);
+              }
+            }, 100);
+          }
+        } catch (e) {
+          console.error('Error initializing Vanta:', e);
+          // Fallback: ensure background color is set even if Vanta fails
+          if (vantaElement) {
+            if (currentTheme === 'dark') {
+              vantaElement.style.backgroundColor = '#0c0c0c';
+            } else {
+              vantaElement.style.backgroundColor = '#ffffff';
+            }
+          }
+        }
+      } else {
+        // Retry if libraries aren't loaded yet (Edge compatibility)
+        setTimeout(waitForVanta, 100);
+      }
+    }
+    
+    // Start waiting for Vanta (with timeout for Edge)
+    setTimeout(waitForVanta, isEdgeBrowser() ? 300 : 50);
   }
   
   // Initialize on page load
   document.addEventListener('DOMContentLoaded', function() {
-    // Wait a bit for theme to be set
-    setTimeout(initVanta, 100);
+    // Ensure theme is set before initializing Vanta (Edge compatibility)
+    const body = document.body;
+    if (!body.getAttribute('data-theme')) {
+      const storedTheme = localStorage.getItem('theme') || 'dark';
+      body.setAttribute('data-theme', storedTheme);
+    }
+    
+    // Set initial background color immediately (Edge fix)
+    const currentTheme = body.getAttribute('data-theme') || 'dark';
+    const vantaElement = document.getElementById('vanta-background');
+    if (vantaElement) {
+      vantaElement.style.backgroundColor = currentTheme === 'dark' ? '#0c0c0c' : '#ffffff';
+      vantaElement.style.background = currentTheme === 'dark' ? '#0c0c0c' : '#ffffff';
+      // Ensure element is visible and has proper dimensions (Edge fix)
+      vantaElement.style.display = 'block';
+      vantaElement.style.visibility = 'visible';
+      vantaElement.style.opacity = '1';
+    }
+    body.style.backgroundColor = currentTheme === 'dark' ? '#0c0c0c' : '#ffffff';
+    
+    // Wait longer for Edge browser to ensure scripts are loaded
+    const initDelay = isEdgeBrowser() ? 500 : 200;
+    setTimeout(initVanta, initDelay);
+    
+    // Also try initializing after window load (Edge fallback)
+    window.addEventListener('load', function() {
+      if (!vantaEffect) {
+        setTimeout(initVanta, 300);
+      }
+    });
     
     // Listen for theme changes
     const observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          initVanta();
+          // Update background immediately on theme change (Edge fix)
+          const newTheme = body.getAttribute('data-theme');
+          const vantaEl = document.getElementById('vanta-background');
+          if (vantaEl) {
+            vantaEl.style.backgroundColor = newTheme === 'dark' ? '#0c0c0c' : '#ffffff';
+            vantaEl.style.background = newTheme === 'dark' ? '#0c0c0c' : '#ffffff';
+          }
+          body.style.backgroundColor = newTheme === 'dark' ? '#0c0c0c' : '#ffffff';
+          
+          // Then reinitialize Vanta
+          setTimeout(initVanta, isEdgeBrowser() ? 300 : 100);
         }
       });
     });

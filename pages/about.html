@@ -74,7 +74,7 @@
     </div>
   </div>
   <div class="apple-music-section">
-    <p class="music-text">What I am listening to <span class="music-emoji">(▰˘◡˘▰):</span></p>
+    <p class="music-text">What I am listening to <span class="music-emoji">(▰˘◡˘▰)</span></p>
     <a href="https://music.apple.com/us/library/playlist/p.B0A88v3sBN2gzG" class="apple-music-playlist" target="_blank" rel="noopener noreferrer">
       <div class="playlist-cover">
         <img src="../images/myers.webp" alt="Tuff Playlist" class="playlist-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -120,16 +120,8 @@
     const img2 = document.querySelector('.aboutimg-2');
     let currentVisible = 1; // 1 for img1, 2 for img2
     
-    // Function to check if mobile
-    function isMobile() {
-      return window.innerWidth <= 768;
-    }
-    
-    // Function to scale img2 to match img1 dimensions (desktop only)
+    // Function to scale img2 to match img1 dimensions
     function scaleImages() {
-      // Don't scale on mobile - let CSS handle it
-      if (isMobile()) return;
-      
       if (img1.complete && img2.complete) {
         const img1Height = img1.offsetHeight;
         const img1Width = img1.offsetWidth;
@@ -153,13 +145,9 @@
     }
     
     initImages();
-    
-    // Only add resize listener on desktop (not mobile)
-    if (!isMobile()) {
-      window.addEventListener('resize', function() {
-        setTimeout(scaleImages, 100);
-      });
-    }
+    window.addEventListener('resize', function() {
+      setTimeout(scaleImages, 100);
+    });
     
     // Set initial states
     img1.style.opacity = '1';

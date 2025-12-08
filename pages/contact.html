@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
     <title>maciel.style = '/ᐠ ´• ˕ •`マ';</title>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body>
   <nav class="navbar">
@@ -44,10 +44,19 @@
       <input type="email" name="_replyto" placeholder="Your Email" required />
       <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
       <input type="hidden" name="_subject" value="New Contact Form Submission">
-      <div class="g-recaptcha" data-sitekey="6LeexyQsAAAAABQC5pfnsPzzrQgVspqjNbaDkL-F"></div>
       <button type="submit">Send Message</button>
       <p id="form-status" style="display: none; margin-top: 1rem; padding: 0.5rem; border-radius: 4px;"></p>
     </form>
+    
+    <!-- Success Modal -->
+    <div id="success-modal" class="success-modal">
+      <div class="success-modal-content">
+        <div class="success-checkmark">
+          <i data-lucide="check-circle" class="checkmark-icon"></i>
+        </div>
+        <p class="success-message">Thank you! Your message has been sent.</p>
+      </div>
+    </div>
     <div class="social">
       <p>Or find me on:</p>
           <a href="https://www.linkedin.com/in/maciel-alvarez-a35a5a340?trk=people-guest_people_search-card" target="_blank">LinkedIn</a>
@@ -83,24 +92,21 @@
   </footer>
 <script src="../main.js"></script>
 <script>
-  // Handle Formspree form submission with reCAPTCHA
+  // Initialize Lucide icons on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  });
+</script>
+<script>
+  // Handle Formspree form submission
   const form = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
   
   if (form) {
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      
-      // Check if reCAPTCHA is completed (required for everyone)
-      const recaptchaResponse = grecaptcha.getResponse();
-      if (!recaptchaResponse) {
-        formStatus.textContent = 'Please complete the reCAPTCHA verification.';
-        formStatus.style.display = 'block';
-        formStatus.style.background = 'rgba(254, 119, 51, 0.2)';
-        formStatus.style.color = '#fe7733';
-        formStatus.style.border = '1px solid #fe7733';
-        return;
-      }
       
       const submitButton = form.querySelector('button[type="submit"]');
       const originalButtonText = submitButton.textContent;
@@ -112,9 +118,6 @@
       
       try {
         const formData = new FormData(form);
-        // Add reCAPTCHA response to form data
-        // Note: Formspree requires reCAPTCHA secret key to be configured in their dashboard
-        formData.append('g-recaptcha-response', recaptchaResponse);
         
         const response = await fetch(form.action, {
           method: 'POST',
@@ -128,14 +131,20 @@
         console.log('Response ok:', response.ok);
         
         if (response.ok) {
-          // Success
-          formStatus.textContent = 'Thank you! Your message has been sent.';
-          formStatus.style.display = 'block';
-          formStatus.style.background = 'rgba(177, 250, 99, 0.2)';
-          formStatus.style.color = '#b1fa63';
-          formStatus.style.border = '1px solid #b1fa63';
+          // Success - show animated modal
           form.reset();
-          grecaptcha.reset(); // Reset reCAPTCHA
+          const successModal = document.getElementById('success-modal');
+          if (successModal) {
+            // Initialize Lucide icons if not already done
+            if (typeof lucide !== 'undefined') {
+              lucide.createIcons();
+            }
+            successModal.classList.add('show');
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+              successModal.classList.remove('show');
+            }, 3000);
+          }
         } else {
           // Try to get error details
           let errorMessage = 'Something went wrong';
@@ -158,7 +167,6 @@
         formStatus.style.background = 'rgba(254, 119, 51, 0.2)';
         formStatus.style.color = '#fe7733';
         formStatus.style.border = '1px solid #fe7733';
-        grecaptcha.reset(); // Reset reCAPTCHA on error
       } finally {
         // Re-enable submit button
         submitButton.disabled = false;
