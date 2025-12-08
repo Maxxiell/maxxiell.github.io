@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="../fv3.ico" type="image/x-icon">
+    <!--Geist Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <!--italics-font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <title>maciel.style = '/ᐠ ´• ˕ •`マ';</title>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo"><a href="../index.html">M▲</a></div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-links">
+      <div class="links">
+        <a href="/pages/resume.html">Resume</a>
+        <a href="/pages/gallery.html">Gallery</a>
+        <a href="/pages/about.html">About</a>     
+        <a class="contactinfo" href="/pages/contact.html">Contact</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+      </button>
+    </div>
+  </nav>
+  
+  <div class="gallery-header">
+    <h1>Gallery</h1>
+    <p>Explore my creative work across different styles</p>
+  </div>
+
+<div class="gallery-categories">
+  <div class="category-card locked-card" data-gallery="gallery2.html">
+    <div class="card-image">
+      <img src="../images/14.webp" alt="Portrait Photography">
+      <div class="coming-soon-overlay">
+        <span class="coming-soon-text">Coming Soon</span>
+      </div>
+    </div>
+    <div class="card-content">
+      <h3>Portrait</h3>
+      <p>Professional portrait photography capturing personality and emotion</p>
+    </div>
+  </div>
+  
+  <div class="category-card locked-card" data-gallery="gallery3.html">
+    <div class="card-image">
+      <img src="../images/37.webp" alt="Graphic Design">
+      <div class="coming-soon-overlay">
+        <span class="coming-soon-text">Coming Soon</span>
+      </div>
+    </div>
+    <div class="card-content">
+      <h3>Graphic Design</h3>
+      <p>Creative visual design work and digital art projects</p>
+    </div>
+  </div>
+  
+  <div class="category-card auto-card" onclick="location.href='gallery-auto.html'">
+    <div class="card-image">
+      <img src="../images/25.webp" alt="Automotive Photography">
+    </div>
+    <div class="card-content">
+      <h3>Auto</h3>
+      <p>Automotive photography showcasing cars and automotive culture</p>
+    </div>
+  </div>
+</div>
+
+<!-- Password Modal -->
+<div class="password-modal" id="passwordModal">
+  <div class="password-modal-content">
+    <span class="password-close" id="passwordClose">&times;</span>
+    <h2>Password Required</h2>
+    <p>This gallery is password protected.</p>
+    <input type="password" id="passwordInput" placeholder="Enter password" autofocus>
+    <p class="password-error" id="passwordError"></p>
+    <button id="passwordSubmit">Submit</button>
+  </div>
+</div>
+<div class="lightbox" id="lightbox">
+  <span class="close" id="closeBtn">&times;</span>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="Full Image">
+</div>
+<script>
+  const galleryImages = document.querySelectorAll('.gallery-item img');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn = document.getElementById('closeBtn');
+
+  galleryImages.forEach(img => {
+    img.addEventListener('click', () => {
+      if (img.src) {
+        lightboxImg.src = img.src;
+        lightbox.style.display = 'flex';
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+    lightboxImg.src = '';
+  });
+
+  // Optional: close on outside click
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    }
+  });
+
+  // Optional: close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    }
+  });
+</script>
+
+  <footer class="vertical-footer">
+    <div class="vertical-footer-content">
+      Maciel Alvarez © 2025
+    </div>
+  </footer>
+
+  <footer class="vertical-footer-left">
+    <div class="vertical-footer-left-content">
+      ૮ ˶ᵔ ᵕ ᵔ˶ ა
+    </div>
+  </footer>
+
+<script src="../main.js"></script>
+<script>
+  // Password protection for locked cards
+  const PASSWORD = '21978025117997';
+  const lockedCards = document.querySelectorAll('.locked-card');
+  const passwordModal = document.getElementById('passwordModal');
+  const passwordInput = document.getElementById('passwordInput');
+  const passwordSubmit = document.getElementById('passwordSubmit');
+  const passwordClose = document.getElementById('passwordClose');
+  const passwordError = document.getElementById('passwordError');
+  let targetGallery = '';
+
+  lockedCards.forEach(card => {
+    card.addEventListener('click', function() {
+      targetGallery = this.getAttribute('data-gallery');
+      passwordModal.style.display = 'flex';
+      passwordInput.value = '';
+      passwordError.textContent = '';
+      passwordInput.focus();
+    });
+  });
+
+  function checkPassword() {
+    if (passwordInput.value === PASSWORD) {
+      passwordModal.style.display = 'none';
+      window.location.href = targetGallery;
+    } else {
+      passwordError.textContent = 'Incorrect password. Please try again.';
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  }
+
+  passwordSubmit.addEventListener('click', checkPassword);
+  
+  passwordInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      checkPassword();
+    }
+  });
+
+  passwordClose.addEventListener('click', function() {
+    passwordModal.style.display = 'none';
+    passwordInput.value = '';
+    passwordError.textContent = '';
+  });
+
+  // Close modal when clicking outside
+  passwordModal.addEventListener('click', function(e) {
+    if (e.target === passwordModal) {
+      passwordModal.style.display = 'none';
+      passwordInput.value = '';
+      passwordError.textContent = '';
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && passwordModal.style.display === 'flex') {
+      passwordModal.style.display = 'none';
+      passwordInput.value = '';
+      passwordError.textContent = '';
+    }
+  });
+</script>
+</body>
+</html>

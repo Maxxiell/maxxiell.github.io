@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="shortcut icon" href="../fv3.ico" type="image/x-icon">
+    <!--Geist Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <!--italics-font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <title>Graphic Design - maciel.style</title>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo"><a href="../index.html">M▲</a></div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-links">
+      <div class="links">
+        <a href="/pages/resume.html">Resume</a>
+        <a href="/pages/gallery.html">Gallery</a>
+        <a href="/pages/about.html">About</a>
+      <a class="contactinfo" href="/pages/contact.html">Contact</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+      </button>
+    </div>
+  </nav>
+  
+  <div class="gallery-header">
+    <h1>Graphic Design</h1>
+    <p>Creative visual design work and digital art projects</p>
+    <a href="gallery.html" class="back-link">← Back to Gallery Categories</a>
+  </div>
+
+<div class="gallery">
+  <div class="gallery-item"><img src="../images/1.webp" alt="Design 1"></div>
+  <div class="gallery-item big"><img src="../images/2.webp" alt="Design 2"></div>
+  <div class="gallery-item tall"><img src="../images/4.webp" alt="Design 3"></div>
+  <div class="gallery-item"><img src="../images/6(1).webp" alt="Design 4"></div>
+  <div class="gallery-item wide"><img src="../images/7.webp" alt="Design 5"></div>
+  <div class="gallery-item"><img src="../images/8.webp" alt="Design 6"></div>
+  <div class="gallery-item tall"><img src="../images/9.webp" alt="Design 7"></div>
+  <div class="gallery-item big"><img src="../images/14.webp" alt="Design 8"></div>
+  <div class="gallery-item"><img src="../images/16.webp" alt="Design 9"></div>
+  <div class="gallery-item tall"><img src="../images/34.webp" alt="Design 10"></div>
+  <div class="gallery-item"><img src="../images/35.webp" alt="Design 11"></div>
+  <div class="gallery-item big"><img src="../images/36.webp" alt="Design 12"></div>
+  <div class="gallery-item tall"><img src="../images/37.webp" alt="Design 13"></div>
+  <div class="gallery-item"><img src="../images/40.webp" alt="Design 14"></div>
+  <div class="gallery-item wide"><img src="../images/IMG_2433.webp" alt="Design 15"></div>
+  <div class="gallery-item"><img src="../images/IMG_2434.webp" alt="Design 16"></div>
+  <div class="gallery-item tall"><img src="../images/IMG_2435.webp" alt="Design 17"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <span class="close" id="closeBtn">&times;</span>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="Full Image">
+</div>
+
+<div class="footer">
+  © 2025 Syntax-IO LLC. Maciel Alvarez · Unauthorized use is prohibited · Intellectual property protected.
+</div>
+
+<script>
+  const galleryImages = document.querySelectorAll('.gallery-item img');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn = document.getElementById('closeBtn');
+
+  galleryImages.forEach(img => {
+    img.addEventListener('click', () => {
+      if (img.src) {
+        lightboxImg.src = img.src;
+        lightbox.style.display = 'flex';
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+    lightboxImg.src = '';
+  });
+
+  // Optional: close on outside click
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    }
+  });
+
+  // Optional: close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    }
+  });
+</script>
+<script src="../main.js"></script>
+
+</body>
+</html>
