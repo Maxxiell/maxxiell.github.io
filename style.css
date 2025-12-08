@@ -1813,6 +1813,33 @@ body::selection {
     width: 100%;
     max-width: 100%;
   }
+  
+  /* Apple Music card - wider on mobile */
+  .apple-music-playlist {
+    width: 88.33% !important;
+    max-width: 441.64px !important;
+  }
+  
+  /* Apple logo - hide from subtitle and show before arrow in mobile */
+  .playlist-subtitle .apple-logo {
+    display: none !important;
+  }
+  
+  /* Create container for logo + arrow */
+  .playlist-arrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Show Apple logo before arrow */
+  .playlist-arrow .apple-logo-mobile {
+    display: block !important;
+    width: 15.82px !important;
+    height: 15.82px !important;
+    fill: var(--text-muted);
+    flex-shrink: 0;
+  }
 }
 
 /* Apple-inspired Theme Toggle */
