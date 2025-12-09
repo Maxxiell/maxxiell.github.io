@@ -13,6 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <title>Portrait Photography - maciel.style</title>
 </head>
 <body>
@@ -33,6 +35,7 @@
       <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
       </button>
     </div>
+    <div id="navbar-vanta" class="navbar-vanta"></div>
   </nav>
   
   <div class="gallery-header">
@@ -103,6 +106,175 @@
       lightboxImg.src = '';
     }
   });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+<script>
+  // Navbar Vanta dots initialization
+  let navbarVantaEffect = null;
+  
+  function initNavbarVanta() {
+    // Don't initialize on mobile - destroy if exists
+    if (window.innerWidth <= 768) {
+      if (navbarVantaEffect) {
+        try {
+          navbarVantaEffect.destroy();
+          navbarVantaEffect = null;
+        } catch (e) {
+          console.warn('Error destroying navbar vanta on mobile:', e);
+        }
+      }
+      const navbarVantaEl = document.getElementById('navbar-vanta');
+      if (navbarVantaEl) {
+        navbarVantaEl.style.display = 'none';
+        navbarVantaEl.innerHTML = '';
+      }
+      return;
+    }
+    
+    const navbarVantaEl = document.getElementById('navbar-vanta');
+    if (!navbarVantaEl) return;
+    
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+      navbarVantaEl.style.right = '0';
+      navbarVantaEl.style.width = '381px';
+      navbarVantaEl.style.height = (Math.max(navbar.offsetHeight, 60) * 3) + 'px';
+    }
+    
+    const theme = document.body.getAttribute('data-theme') || 'dark';
+    const bgColor = theme === 'dark' ? 0x0c0c0c : 0xffffff;
+    const dotColor = theme === 'dark' ? 0xb1fa63 : 0x1E90FF;
+    
+    if (navbarVantaEffect) {
+      try {
+        navbarVantaEffect.destroy();
+      } catch (e) {
+        console.warn('Error destroying navbar vanta effect:', e);
+      }
+      navbarVantaEffect = null;
+    }
+    
+    if (typeof THREE !== 'undefined' && typeof VANTA !== 'undefined' && VANTA.DOTS) {
+      try {
+        navbarVantaEffect = VANTA.DOTS({
+          el: "#navbar-vanta",
+          mouseControls: false,
+          touchControls: false,
+          gyroControls: false,
+          minHeight: 100.00,
+          minWidth: 200.00,
+          scale: 1.00,
+          scaleMobile: 1.00,
+          color: dotColor,
+          color2: dotColor,
+          backgroundColor: bgColor,
+          size: 4.00,
+          spacing: 20.00,
+          showLines: false,
+          forceAnimate: true,
+          THREE: THREE
+        });
+        
+        if (navbarVantaEffect && navbarVantaEffect.resize) {
+          setTimeout(function() {
+            navbarVantaEffect.resize();
+          }, 100);
+        }
+      } catch (e) {
+        console.warn('Error initializing navbar vanta effect:', e);
+      }
+    }
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(initNavbarVanta, 300);
+    });
+  } else {
+    setTimeout(initNavbarVanta, 300);
+  }
+  
+  const navbarThemeObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setTimeout(initNavbarVanta, 100);
+      }
+    });
+  });
+  
+  navbarThemeObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+  
+  function setupNavbarHover() {
+    const navbar = document.querySelector('.navbar');
+    const navbarVanta = document.getElementById('navbar-vanta');
+    
+    if (navbar && navbarVanta) {
+      function updateVantaPosition() {
+        navbarVanta.style.right = '0';
+        navbarVanta.style.width = '381px';
+        navbarVanta.style.height = (Math.max(navbar.offsetHeight, 60) * 3) + 'px';
+      }
+      
+      updateVantaPosition();
+      
+      navbar.addEventListener('mouseenter', function() {
+        navbarVanta.style.opacity = '1';
+      });
+      
+      navbar.addEventListener('mouseleave', function() {
+        navbarVanta.style.opacity = '0';
+      });
+      
+      window.addEventListener('resize', function() {
+        updateVantaPosition();
+        if (navbarVantaEffect && navbarVantaEffect.resize) {
+          navbarVantaEffect.resize();
+        }
+      });
+    }
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNavbarHover);
+  } else {
+    setupNavbarHover();
+  }
+  
+  // Add Lucide icon to contact button and wrap text
+  function setupContactButtonIcon() {
+    const contactButtons = document.querySelectorAll('.contactinfo');
+    contactButtons.forEach(function(button) {
+      if (button.querySelector('.contact-icon')) return;
+      
+      // Wrap the text content
+      const text = button.textContent.trim();
+      button.innerHTML = '';
+      
+      const textSpan = document.createElement('span');
+      textSpan.classList.add('contact-text');
+      textSpan.textContent = text;
+      button.appendChild(textSpan);
+      
+      const icon = document.createElement('i');
+      icon.setAttribute('data-lucide', 'arrow-right');
+      icon.classList.add('contact-icon');
+      button.appendChild(icon);
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupContactButtonIcon);
+  } else {
+    setupContactButtonIcon();
+  }
 </script>
 <script src="../main.js"></script>
 

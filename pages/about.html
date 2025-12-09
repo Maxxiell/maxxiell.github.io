@@ -13,9 +13,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <title>maciel.style = '/ᐠ ´• ˕ •`マ';</title>
 </head>
-<body>
+<body class="about-page">
   <nav class="navbar">
     <div class="logo"><a href="../index.html">M▲</a></div>
     <div class="hamburger">
@@ -33,11 +35,9 @@
       <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
       </button>
     </div>
+    <div id="navbar-vanta" class="navbar-vanta"></div>
   </nav>
   <div class="aboutsection">
-      <div class="bandcamp-player-wrapper">
-        <iframe id="bandcamp-player" style="border: 0; width: 100%; height: 120px;" src="" seamless><a href="https://janeremover.bandcamp.com/album/ghostholding">Ghostholding by venturing</a></iframe>
-      </div>
       <div class="aboutimg-container">
         <img class="aboutimg aboutimg-1" src="../images/lil-bub.webp" alt="">
         <img class="aboutimg aboutimg-2" src="../images/i.webp" alt="">
@@ -52,7 +52,7 @@
           guide my work into meaningful
           and thoughtful decisions. I move fluidly between these disciplines with the goal of consistency.
         </p>
-        <p class="quote">“I have no special talent. I am only passionately curious.” <br> — Albert Einstein</p>
+        <p class="quote">"I have no special talent. I am only passionately curious." <br> — Albert Einstein</p>
         <p>
           That curiosity — not just about how things work, but why they feel the way they do
           — is what drives everything I build.
@@ -60,16 +60,56 @@
       </div>
   </div>
   <div class="about-section-2">
-    <div class="about-content-wrapper">
-      <div class="about-text-left">
-        <h1>Sienna<br>Noelle</h1>
-        <p>11/26 <span class="heart-symbol">♥</span></p>
-        <p>
-          My newborn daughter drives me to be the best version of myself in everything I do. Her presence has instilled in me a deeper sense of purpose and determination—pushing me to create work that not only reflects my passion but also sets an example of excellence. Every project becomes an opportunity to demonstrate what's possible when you combine dedication, creativity, and unwavering commitment to growth.
-        </p>
-      </div>
+    <div class="about-section-2-text">
+      <h1>My Little Family</h1>
+      <p>11/26/25 <span class="heart-symbol">♥</span></p>
+      <p>
+        My bestfriend and girlfriend Mariana and I share a newborn daughter name Sienna. They drive me to be the best version of myself in everything I do
+        and instill in me a deeper sense of purpose, pushing me to make sure I am the best friend, boyfriend, and father I can be.
+        Every project becomes an opportunity to demonstrate my dedication, creativity, and unwavering commitment to growth.
+      </p>
+    </div>
+    <div class="about-section-2-images">
       <div class="about-image-right">
-        <img src="../images/IMG_3253.webp" alt="">
+        <img class="about-img-9340" src="../images/IMG_9340.webp" alt="">
+        <img class="about-img-3253" src="../images/IMG_3253.webp" alt="">
+      </div>
+    </div>
+  </div>
+  <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M9 18l6-6-6-6"/>
+    </svg>
+  </button>
+  <div class="about-sidebar" id="about-sidebar">
+    <div class="sidebar-section">
+      <h3 class="sidebar-heading">Now Playing</h3>
+      <div class="bandcamp-player-wrapper">
+        <iframe id="bandcamp-player" style="border: 0; width: 170px; height: 170px;" src="" seamless><a href="https://janeremover.bandcamp.com/album/ghostholding">Ghostholding by venturing</a></iframe>
+      </div>
+    </div>
+    
+    <div class="sidebar-section">
+      <h3 class="sidebar-heading">Currently Reading</h3>
+      <div class="sidebar-item">
+        <img src="../images/dorohedoro.jpg" alt="Dorohedoro Vol. 7" class="sidebar-thumbnail">
+        <span>Dorohedoro Vol. 7</span>
+      </div>
+      <div class="sidebar-item">
+        <img src="../images/48laws.jpg" alt="The 48 Laws of Power" class="sidebar-thumbnail">
+        <span>The 48 Laws of Power</span>
+      </div>
+    </div>
+    
+    <div class="sidebar-section">
+      <h3 class="sidebar-heading">Currently Watching</h3>
+      <div class="sidebar-item">
+        <img src="../images/strangerthings.jpg" alt="Stranger Things Season 5" class="sidebar-thumbnail">
+        <span>Stranger Things S5</span>
+      </div>
+      <div class="sidebar-item">
+        <img src="../images/thebear.jpg" alt="The Bear Season 1" class="sidebar-thumbnail">
+        <span>The Bear Season 1</span>
       </div>
     </div>
   </div>
@@ -116,6 +156,8 @@
   </footer>
 
 <script src="../main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -204,11 +246,11 @@
     const trackId = '3917035062';
     
     if (theme === 'light') {
-      // Light mode: white background, blue accent (#1E90FF = dodgerblue)
-      player.src = `https://bandcamp.com/EmbeddedPlayer/album=${albumId}/size=large/bgcol=ffffff/linkcol=1E90FF/tracklist=false/artwork=small/track=${trackId}/transparent=true/`;
+      // Light mode: white background, blue accent (#0687f5)
+      player.src = `https://bandcamp.com/EmbeddedPlayer/album=${albumId}/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=${trackId}/transparent=true/`;
     } else {
       // Dark mode: dark background, green accent (#b1fa63)
-      player.src = `https://bandcamp.com/EmbeddedPlayer/album=${albumId}/size=large/bgcol=333333/linkcol=b1fa63/tracklist=false/artwork=small/track=${trackId}/transparent=true/`;
+      player.src = `https://bandcamp.com/EmbeddedPlayer/album=${albumId}/size=large/bgcol=333333/linkcol=b1fa63/minimal=true/track=${trackId}/transparent=true/`;
     }
   }
   
@@ -229,7 +271,195 @@
     attributeFilter: ['data-theme']
   });
 
+  // Sidebar toggle functionality
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const aboutSidebar = document.getElementById('about-sidebar');
+  
+  if (sidebarToggle && aboutSidebar) {
+    sidebarToggle.addEventListener('click', function() {
+      aboutSidebar.classList.toggle('hidden');
+      sidebarToggle.classList.toggle('hidden');
+    });
+  }
+
+  // Navbar Vanta dots initialization
+  let navbarVantaEffect = null;
+  
+  function initNavbarVanta() {
+    // Don't initialize on mobile - destroy if exists
+    if (window.innerWidth <= 768) {
+      if (navbarVantaEffect) {
+        try {
+          navbarVantaEffect.destroy();
+          navbarVantaEffect = null;
+        } catch (e) {
+          console.warn('Error destroying navbar vanta on mobile:', e);
+        }
+      }
+      const navbarVantaEl = document.getElementById('navbar-vanta');
+      if (navbarVantaEl) {
+        navbarVantaEl.style.display = 'none';
+        navbarVantaEl.innerHTML = '';
+      }
+      return;
+    }
+    
+    const navbarVantaEl = document.getElementById('navbar-vanta');
+    if (!navbarVantaEl) return;
+    
+    // Ensure the container has proper dimensions - positioned to the right side of navbar
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+      navbarVantaEl.style.right = '0';
+      navbarVantaEl.style.width = '381px';
+      navbarVantaEl.style.height = (Math.max(navbar.offsetHeight, 60) * 3) + 'px';
+    }
+    
+    const theme = document.body.getAttribute('data-theme') || 'dark';
+    const bgColor = theme === 'dark' ? 0x0c0c0c : 0xffffff;
+    const dotColor = theme === 'dark' ? 0xb1fa63 : 0x1E90FF;
+    
+    if (navbarVantaEffect) {
+      try {
+        navbarVantaEffect.destroy();
+      } catch (e) {
+        console.warn('Error destroying navbar vanta effect:', e);
+      }
+      navbarVantaEffect = null;
+    }
+    
+    if (typeof THREE !== 'undefined' && typeof VANTA !== 'undefined' && VANTA.DOTS) {
+      try {
+        navbarVantaEffect = VANTA.DOTS({
+          el: "#navbar-vanta",
+          mouseControls: false,
+          touchControls: false,
+          gyroControls: false,
+          minHeight: 100.00,
+          minWidth: 200.00,
+          scale: 1.00,
+          scaleMobile: 1.00,
+          color: dotColor,
+          color2: dotColor,
+          backgroundColor: bgColor,
+          size: 4.00,
+          spacing: 20.00,
+          showLines: false,
+          forceAnimate: true,
+          THREE: THREE
+        });
+        
+        // Force resize after initialization
+        if (navbarVantaEffect && navbarVantaEffect.resize) {
+          setTimeout(function() {
+            navbarVantaEffect.resize();
+          }, 100);
+        }
+      } catch (e) {
+        console.error('Error initializing navbar Vanta:', e);
+      }
+    } else {
+      setTimeout(initNavbarVanta, 100);
+    }
+  }
+  
+  // Initialize navbar vanta after DOM loads
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(initNavbarVanta, 300);
+    });
+  } else {
+    setTimeout(initNavbarVanta, 300);
+  }
+  
+  // Update navbar vanta on theme change
+  const navbarThemeObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setTimeout(initNavbarVanta, 100);
+      }
+    });
+  });
+  
+  navbarThemeObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+  
+  // Show navbar vanta on navbar hover
+  function setupNavbarHover() {
+    const navbar = document.querySelector('.navbar');
+    const navbarVanta = document.getElementById('navbar-vanta');
+    
+    if (navbar && navbarVanta) {
+      function updateVantaPosition() {
+        navbarVanta.style.right = '0';
+        navbarVanta.style.width = '381px';
+        navbarVanta.style.height = (Math.max(navbar.offsetHeight, 60) * 3) + 'px';
+      }
+      
+      updateVantaPosition();
+      
+      navbar.addEventListener('mouseenter', function() {
+        navbarVanta.style.opacity = '1';
+      });
+      
+      navbar.addEventListener('mouseleave', function() {
+        navbarVanta.style.opacity = '0';
+      });
+      
+      window.addEventListener('resize', function() {
+        updateVantaPosition();
+        if (navbarVantaEffect && navbarVantaEffect.resize) {
+          navbarVantaEffect.resize();
+        }
+      });
+      
+    }
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNavbarHover);
+  } else {
+    setupNavbarHover();
+  }
+  
+  // Add Lucide icon to contact button and wrap text
+  function setupContactButtonIcon() {
+    const contactButtons = document.querySelectorAll('.contactinfo');
+    contactButtons.forEach(function(button) {
+      // Check if already set up
+      if (button.querySelector('.contact-icon')) return;
+      
+      // Wrap the text content
+      const text = button.textContent.trim();
+      button.innerHTML = '';
+      
+      const textSpan = document.createElement('span');
+      textSpan.classList.add('contact-text');
+      textSpan.textContent = text;
+      button.appendChild(textSpan);
+      
+      // Create icon element
+      const icon = document.createElement('i');
+      icon.setAttribute('data-lucide', 'arrow-right');
+      icon.classList.add('contact-icon');
+      button.appendChild(icon);
+      
+      // Initialize Lucide icon
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupContactButtonIcon);
+  } else {
+    setupContactButtonIcon();
+  }
 
 </script>
 </body>
+</html>
 </html>

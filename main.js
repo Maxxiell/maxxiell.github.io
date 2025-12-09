@@ -1,3 +1,51 @@
+// Setup contact button icon on all pages
+function setupContactButtonIcon() {
+  const contactButtons = document.querySelectorAll('.contactinfo');
+  contactButtons.forEach(function(button) {
+    // Check if already set up
+    if (button.querySelector('.contact-icon')) return;
+    
+    // Wrap the text content
+    const text = button.textContent.trim();
+    if (!text) return;
+    
+    button.innerHTML = '';
+    
+    const textSpan = document.createElement('span');
+    textSpan.classList.add('contact-text');
+    textSpan.textContent = text;
+    button.appendChild(textSpan);
+    
+    // Create icon element
+    const icon = document.createElement('i');
+    icon.setAttribute('data-lucide', 'arrow-right');
+    icon.classList.add('contact-icon');
+    button.appendChild(icon);
+    
+    // Initialize Lucide icon when available
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      lucide.createIcons();
+    } else {
+      // Wait for Lucide to load
+      const checkLucide = setInterval(function() {
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+          lucide.createIcons();
+          clearInterval(checkLucide);
+        }
+      }, 50);
+      
+      // Stop checking after 10 seconds
+      setTimeout(function() {
+        clearInterval(checkLucide);
+        // Try one more time
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }, 10000);
+    }
+  });
+}
+
 // Theme toggle and mobile menu functionality
 document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('theme-toggle');
@@ -214,4 +262,50 @@ if (header) {
         c3Text.style.color = '';
         aText.style.color = '';
     });
+    
+    // Setup contact button icon
+    setupContactButtonIcon();
+    
+    // Re-run multiple times to ensure it works
+    setTimeout(function() {
+      setupContactButtonIcon();
+      if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+      }
+    }, 300);
+    
+    setTimeout(function() {
+      setupContactButtonIcon();
+      if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+      }
+    }, 1000);
+}
+
+// Also run immediately if DOM is already loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    setupContactButtonIcon();
+    setTimeout(function() {
+      setupContactButtonIcon();
+      if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+      }
+    }, 500);
+  });
+} else {
+  setupContactButtonIcon();
+  // Try multiple times to ensure it works
+  setTimeout(function() {
+    setupContactButtonIcon();
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      lucide.createIcons();
+    }
+  }, 300);
+  setTimeout(function() {
+    setupContactButtonIcon();
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      lucide.createIcons();
+    }
+  }, 1000);
 }
