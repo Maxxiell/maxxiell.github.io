@@ -82,8 +82,21 @@
   <div class="gallery-item"><img src="../images/IMG_2435.webp" alt=""></div>
 </div>
 <div class="lightbox" id="lightbox">
-  <span class="close" id="closeBtn">&times;</span>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="Full Image">
+  <div class="lightbox-image-container">
+    <button class="lightbox-nav lightbox-prev" id="prevBtn" aria-label="Previous">
+      <i data-lucide="chevron-left"></i>
+    </button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Full Image">
+    <button class="lightbox-nav lightbox-next" id="nextBtn" aria-label="Next">
+      <i data-lucide="chevron-right"></i>
+    </button>
+    <button class="lightbox-close" id="closeBtn" aria-label="Close">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+  <div class="lightbox-preview" id="lightboxPreview">
+    <!-- Thumbnails will be inserted here -->
+  </div>
 </div>
 <div class="footer">
   © 2025 Syntax-IO LLC. Maciel Alvarez · Unauthorized use is prohibited · Intellectual property protected.
@@ -93,36 +106,125 @@
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
   const closeBtn = document.getElementById('closeBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const previewPane = document.getElementById('lightboxPreview');
+  let currentImageIndex = 0;
+  const imageArray = Array.from(galleryImages);
 
-  galleryImages.forEach(img => {
+  // Create preview thumbnails
+  function createPreviewThumbnails() {
+    previewPane.innerHTML = '';
+    imageArray.forEach((img, index) => {
+      const thumb = document.createElement('img');
+      thumb.src = img.src;
+      thumb.className = 'preview-thumb';
+      thumb.dataset.index = index;
+      thumb.addEventListener('click', () => {
+        currentImageIndex = index;
+        updateLightbox();
+      });
+      previewPane.appendChild(thumb);
+    });
+  }
+
+  // Update lightbox with current image
+  function updateLightbox() {
+    if (imageArray[currentImageIndex]) {
+      lightboxImg.src = imageArray[currentImageIndex].src;
+      updatePreviewSelection();
+    }
+  }
+
+  // Update preview selection
+  function updatePreviewSelection() {
+    const thumbs = previewPane.querySelectorAll('.preview-thumb');
+    thumbs.forEach((thumb, index) => {
+      if (index === currentImageIndex) {
+        thumb.classList.add('active');
+        // Scroll preview into view
+        thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        thumb.classList.remove('active');
+      }
+    });
+  }
+
+  // Navigate to previous image
+  function showPrevious() {
+    currentImageIndex = (currentImageIndex - 1 + imageArray.length) % imageArray.length;
+    updateLightbox();
+  }
+
+  // Navigate to next image
+  function showNext() {
+    currentImageIndex = (currentImageIndex + 1) % imageArray.length;
+    updateLightbox();
+  }
+
+  galleryImages.forEach((img, index) => {
     img.addEventListener('click', () => {
-      if (img.src) {
-        lightboxImg.src = img.src;
-        lightbox.style.display = 'flex';
+      currentImageIndex = index;
+      lightbox.style.display = 'flex';
+      lightbox.classList.add('open');
+      updateLightbox();
+      // Hide back to top button when lightbox is open
+      const backToTopBtn = document.querySelector('.back-to-top');
+      if (backToTopBtn) {
+        backToTopBtn.style.display = 'none';
+      }
+      // Initialize Lucide icons
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
       }
     });
   });
 
-  closeBtn.addEventListener('click', () => {
-    lightbox.style.display = 'none';
-    lightboxImg.src = '';
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showPrevious();
   });
+
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showNext();
+  });
+
+  function closeLightbox() {
+    lightbox.style.display = 'none';
+    lightbox.classList.remove('open');
+    lightboxImg.src = '';
+    // Show back to top button when lightbox is closed
+    const backToTopBtn = document.querySelector('.back-to-top');
+    if (backToTopBtn) {
+      backToTopBtn.style.display = '';
+    }
+  }
+
+  closeBtn.addEventListener('click', closeLightbox);
 
   // Optional: close on outside click
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) {
-      lightbox.style.display = 'none';
-      lightboxImg.src = '';
+      closeLightbox();
     }
   });
 
-  // Optional: close on Escape key
+  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      lightbox.style.display = 'none';
-      lightboxImg.src = '';
+    if (lightbox.classList.contains('open')) {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        showPrevious();
+      } else if (e.key === 'ArrowRight') {
+        showNext();
+      }
     }
   });
+
+  // Initialize preview thumbnails on page load
+  createPreviewThumbnails();
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>

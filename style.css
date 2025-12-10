@@ -125,6 +125,75 @@ body.contact-page {
   background-color: #ffffff !important;
 }
 
+/* Custom Scrollbar Styles - WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000 !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #808080 !important;
+  border-radius: 8px !important;
+  border: 2px solid #000000 !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #606060 !important;
+}
+
+::-webkit-scrollbar-corner {
+  background: #000000 !important;
+}
+
+/* Light mode scrollbar */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #ffffff !important;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #808080 !important;
+  border: 2px solid #ffffff !important;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #606060 !important;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-corner {
+  background: #ffffff !important;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: auto !important;
+  scrollbar-color: #808080 #000000 !important;
+}
+
+[data-theme="light"] * {
+  scrollbar-color: #808080 #ffffff !important;
+}
+
+/* Edge Legacy support */
+html,
+body {
+  scrollbar-face-color: #808080 !important;
+  scrollbar-track-color: #000000 !important;
+  scrollbar-arrow-color: #808080 !important;
+  scrollbar-shadow-color: #000000 !important;
+}
+
+[data-theme="light"] html,
+[data-theme="light"] body {
+  scrollbar-face-color: #808080 !important;
+  scrollbar-track-color: #ffffff !important;
+  scrollbar-arrow-color: #808080 !important;
+  scrollbar-shadow-color: #ffffff !important;
+}
+
 /* Success Modal */
 .success-modal {
   position: fixed;
@@ -1069,21 +1138,285 @@ body::selection {
   transition: background-color 0.3s ease;
 }
 
+.lightbox-image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100vw;
+  max-height: calc(100vh - 120px);
+  margin-bottom: 120px;
+}
+
 .lightbox-img {
   max-width: 100vw;
-  max-height: 80vh;
+  max-height: calc(100vh - 120px);
   object-fit: contain;
 }
 
-.close {
+.lightbox-nav {
   position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 40px;
-  color: var(--text-secondary);
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  z-index: 1001;
+  padding: 40px 20px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-nav:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.lightbox-nav i,
+.lightbox-nav svg {
+  width: 43px !important;
+  height: 43px !important;
+  stroke-width: 1.5 !important;
+}
+
+.lightbox-nav i *,
+.lightbox-nav svg * {
+  stroke: rgba(255, 255, 255, 0.8);
+  fill: none;
+}
+
+.lightbox-nav:hover i,
+.lightbox-nav:hover svg,
+.lightbox-nav:hover i *,
+.lightbox-nav:hover svg * {
+  stroke: rgba(255, 255, 255, 1);
+}
+
+[data-theme="light"] .lightbox-nav i,
+[data-theme="light"] .lightbox-nav svg,
+[data-theme="light"] .lightbox-nav i *,
+[data-theme="light"] .lightbox-nav svg * {
+  stroke: rgba(0, 0, 0, 0.8) !important;
+}
+
+[data-theme="light"] .lightbox-nav:hover i,
+[data-theme="light"] .lightbox-nav:hover svg,
+[data-theme="light"] .lightbox-nav:hover i *,
+[data-theme="light"] .lightbox-nav:hover svg * {
+  stroke: rgba(0, 0, 0, 1) !important;
+}
+
+.lightbox-prev {
+  left: -80px;
+}
+
+.lightbox-next {
+  right: -80px;
+}
+
+.lightbox-nav i,
+.lightbox-nav svg {
+  width: 43px !important;
+  height: 43px !important;
+  stroke-width: 1.5 !important;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   z-index: 1000;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  color: #000000;
+  padding: 0;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.lightbox-close i {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2.5;
+  stroke: currentColor;
+}
+
+/* Desktop view - position X button to the right of right arrow */
+@media (min-width: 769px) {
+  .lightbox-close {
+    top: 50%;
+    transform: translateY(-50%);
+    right: -140px;
+    background: transparent;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-close i,
+  .lightbox-close svg,
+  .lightbox-close i *,
+  .lightbox-close svg * {
+    color: white !important;
+    stroke: white !important;
+    fill: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    stroke-width: 3 !important;
+  }
+
+  .lightbox-close:hover {
+    background: transparent;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  [data-theme="light"] .lightbox-close i,
+  [data-theme="light"] .lightbox-close svg,
+  [data-theme="light"] .lightbox-close i *,
+  [data-theme="light"] .lightbox-close svg * {
+    color: #1E90FF !important;
+    stroke: #1E90FF !important;
+  }
+}
+
+.lightbox-preview {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  z-index: 1000;
+}
+
+.lightbox-preview::-webkit-scrollbar {
+  height: 6px;
+}
+
+.lightbox-preview::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lightbox-preview::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.lightbox-preview::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.preview-thumb {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.preview-thumb:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.preview-thumb.active {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
+}
+
+/* Mobile view adjustments for lightbox */
+@media (max-width: 768px) {
+  .lightbox-nav {
+    display: none !important;
+  }
+
+  .lightbox-image-container {
+    max-height: calc(100vh - 180px);
+    margin-bottom: 180px;
+  }
+
+  .lightbox-img {
+    max-height: calc(100vh - 180px);
+  }
+
+  .lightbox-close {
+    top: calc(56px + 10px);
+    right: 10px;
+    z-index: 1001;
+    background: transparent !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    color: #b1fa63 !important;
+  }
+
+  .lightbox-close i,
+  .lightbox-close svg,
+  .lightbox-close i *,
+  .lightbox-close svg * {
+    color: #b1fa63 !important;
+    stroke: #b1fa63 !important;
+    fill: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    stroke-width: 3 !important;
+  }
+
+  [data-theme="light"] .lightbox-close i,
+  [data-theme="light"] .lightbox-close svg,
+  [data-theme="light"] .lightbox-close i *,
+  [data-theme="light"] .lightbox-close svg * {
+    color: #1E90FF !important;
+    stroke: #1E90FF !important;
+  }
+
+  .lightbox-close:hover {
+    background: transparent !important;
+    transform: scale(1.1);
+  }
+
+  .lightbox-preview {
+    height: 120px;
+    margin-bottom: 3px;
+    padding-bottom: 3px;
+  }
+}
+
+/* Hide back to top button when lightbox is open */
+.lightbox.open ~ .back-to-top,
+body:has(.lightbox.open) .back-to-top {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 /*Banter Loader----------------------------------------------------------------------------------------------*/
@@ -2555,6 +2888,9 @@ body::selection {
     position: relative;
     margin: 1.5rem auto 0;
     z-index: 10001;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .nav-links {
@@ -2776,8 +3112,6 @@ body::selection {
     padding: 2rem 1rem;
     text-align: center;
   }
-
-  .gallery {}
 
   /* Gallery sub-pages mobile layout optimization */
   .gallery-item:first-child {
