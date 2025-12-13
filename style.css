@@ -1408,6 +1408,18 @@ body::selection {
     height: 120px;
     margin-bottom: 3px;
     padding-bottom: 3px;
+    bottom: 30px !important;
+  }
+
+  .lightbox-preview::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  .lightbox-preview {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
   }
 }
 
@@ -1976,10 +1988,10 @@ body:has(.lightbox.open) .back-to-top {
   
   .about-sidebar {
     margin-top: 0 !important;
-  }
-  
-  .aboutsection {
-    display: flex;
+}
+
+.aboutsection {
+  display: flex;
     flex-direction: column;
   }
   
@@ -1998,9 +2010,9 @@ body:has(.lightbox.open) .back-to-top {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-  }
-  
-  .aboutparagraph {
+}
+
+.aboutparagraph {
     order: 3;
   }
   
@@ -2493,7 +2505,7 @@ body:has(.lightbox.open) .back-to-top {
   }
   
   .about-section-2-text h1 {
-    text-align: center;
+    text-align: left;
   }
   
   .about-section-2-text p {
@@ -2891,6 +2903,7 @@ body:has(.lightbox.open) .back-to-top {
     align-self: center;
     margin-left: auto;
     margin-right: auto;
+    transform: translateX(-38%);
   }
 
   .nav-links {
@@ -2941,6 +2954,7 @@ body:has(.lightbox.open) .back-to-top {
     position: relative;
     margin: 1.5rem auto 0;
     z-index: 10001;
+    transform: translateX(-28%);
   }
 
   .nav-links .links a {
@@ -4057,7 +4071,7 @@ body:has(.gallery) {
 [data-theme="light"] .download-resume button {
   background: var(--accent-color);
   color: white;
-}
+  }
 
 .download-resume button:hover {
   transform: translateY(-2px);

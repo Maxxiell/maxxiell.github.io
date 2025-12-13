@@ -86,7 +86,7 @@
     <button class="lightbox-nav lightbox-prev" id="prevBtn" aria-label="Previous">
       <i data-lucide="chevron-left"></i>
     </button>
-    <img class="lightbox-img" id="lightboxImg" src="" alt="Full Image">
+  <img class="lightbox-img" id="lightboxImg" src="" alt="Full Image">
     <button class="lightbox-nav lightbox-next" id="nextBtn" aria-label="Next">
       <i data-lucide="chevron-right"></i>
     </button>
@@ -165,7 +165,7 @@
   galleryImages.forEach((img, index) => {
     img.addEventListener('click', () => {
       currentImageIndex = index;
-      lightbox.style.display = 'flex';
+        lightbox.style.display = 'flex';
       lightbox.classList.add('open');
       updateLightbox();
       // Hide back to top button when lightbox is open
@@ -177,6 +177,8 @@
       if (typeof lucide !== 'undefined') {
         lucide.createIcons();
       }
+      // Setup mobile touch navigation
+      setTimeout(setupMobileTouchNavigation, 100);
     });
   });
 
@@ -213,7 +215,7 @@
   // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (lightbox.classList.contains('open')) {
-      if (e.key === 'Escape') {
+    if (e.key === 'Escape') {
         closeLightbox();
       } else if (e.key === 'ArrowLeft') {
         showPrevious();
@@ -222,6 +224,134 @@
       }
     }
   });
+
+  // Mobile touch navigation - tap and swipe left/right on image to navigate
+  const lightboxImageContainer = document.querySelector('.lightbox-image-container');
+  const lightboxImgElement = document.getElementById('lightboxImg');
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+  let isTouchActive = false;
+  let touchHandlersAttached = false;
+
+  function handleTouchStart(e) {
+    // Only enable on mobile
+    if (window.innerWidth > 768) return;
+    if (!lightbox.classList.contains('open')) return;
+    
+    // Only handle touches on the lightbox image or container
+    const target = e.target;
+    if (target !== lightboxImgElement && target !== lightboxImageContainer && !lightboxImageContainer.contains(target)) {
+      return;
+    }
+    
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchStartTime = Date.now();
+    isTouchActive = true;
+  }
+
+  function handleTouchMove(e) {
+    // Only enable on mobile
+    if (window.innerWidth > 768) return;
+    if (!isTouchActive || !lightbox.classList.contains('open')) return;
+    
+    // Only handle touches on the lightbox image or container
+    const target = e.target;
+    if (target !== lightboxImgElement && target !== lightboxImageContainer && !lightboxImageContainer.contains(target)) {
+      return;
+    }
+    
+    // Prevent default scrolling while swiping on the image
+    const touch = e.touches[0];
+    const deltaX = Math.abs(touch.clientX - touchStartX);
+    const deltaY = Math.abs(touch.clientY - touchStartY);
+    
+    // If horizontal movement is greater than vertical, prevent default
+    if (deltaX > deltaY && deltaX > 10) {
+      e.preventDefault();
+    }
+  }
+
+  function handleTouchEnd(e) {
+    // Only enable on mobile
+    if (window.innerWidth > 768) return;
+    
+    if (!isTouchActive || !lightbox.classList.contains('open')) {
+      isTouchActive = false;
+      return;
+    }
+    
+    // Only handle touches on the lightbox image or container
+    const target = e.target;
+    if (target !== lightboxImgElement && target !== lightboxImageContainer && !lightboxImageContainer.contains(target)) {
+      isTouchActive = false;
+      return;
+    }
+    
+    const touch = e.changedTouches[0];
+    const touchEndX = touch.clientX;
+    const touchEndY = touch.clientY;
+    const touchEndTime = Date.now();
+    
+    // Calculate distance and direction
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    const deltaTime = touchEndTime - touchStartTime;
+    
+    // Check if it's a swipe (horizontal movement > 50px and more horizontal than vertical)
+    const isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50;
+    
+    // Check if it's a tap (small movement < 30px and quick < 300ms)
+    const isTap = Math.abs(deltaX) < 30 && Math.abs(deltaY) < 30 && deltaTime < 300;
+    
+    if (isHorizontalSwipe) {
+      // Swipe detected
+      e.preventDefault();
+      e.stopPropagation();
+      if (deltaX > 0) {
+        // Swipe right - previous image
+        showPrevious();
+      } else {
+        // Swipe left - next image
+        showNext();
+      }
+    } else if (isTap) {
+      // Tap detected - determine which half was tapped
+      const containerRect = lightboxImageContainer.getBoundingClientRect();
+      const tapX = touchEndX - containerRect.left;
+      const containerWidth = containerRect.width;
+      
+      // Determine which half was tapped
+      if (tapX < containerWidth / 2) {
+        // Left half - previous image
+        showPrevious();
+      } else {
+        // Right half - next image
+        showNext();
+      }
+    }
+    
+    isTouchActive = false;
+  }
+
+  // Add touch event listeners when lightbox opens
+  function setupMobileTouchNavigation() {
+    if (window.innerWidth > 768) return;
+    if (!lightboxImageContainer || !lightboxImgElement) return;
+    if (touchHandlersAttached) return;
+    
+    lightboxImageContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+    lightboxImageContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+    lightboxImageContainer.addEventListener('touchend', handleTouchEnd, { passive: false });
+    
+    lightboxImgElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+    lightboxImgElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+    lightboxImgElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+    
+    touchHandlersAttached = true;
+  }
 
   // Initialize preview thumbnails on page load
   createPreviewThumbnails();
