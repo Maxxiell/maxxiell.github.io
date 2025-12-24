@@ -276,9 +276,22 @@
   const aboutSidebar = document.getElementById('about-sidebar');
   
   if (sidebarToggle && aboutSidebar) {
+    // Initialize body class based on sidebar state
+    if (aboutSidebar.classList.contains('hidden')) {
+      document.body.classList.add('sidebar-hidden');
+    } else {
+      document.body.classList.remove('sidebar-hidden');
+    }
+    
     sidebarToggle.addEventListener('click', function() {
       aboutSidebar.classList.toggle('hidden');
       sidebarToggle.classList.toggle('hidden');
+      // Add/remove class to body for CSS targeting
+      if (aboutSidebar.classList.contains('hidden')) {
+        document.body.classList.add('sidebar-hidden');
+      } else {
+        document.body.classList.remove('sidebar-hidden');
+      }
     });
   }
 
