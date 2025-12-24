@@ -2279,6 +2279,22 @@ body:has(.lightbox.open) .back-to-top {
   right: 100px;
 }
 
+/* Desktop view: Animate about containers to center when sidebar is hidden */
+@media (min-width: 1372px) {
+  .aboutsection,
+  .about-section-2,
+  .apple-music-section {
+    transition: margin-left 0.4s ease, margin-right 0.4s ease;
+  }
+
+  body.sidebar-hidden .aboutsection,
+  body.sidebar-hidden .about-section-2,
+  body.sidebar-hidden .apple-music-section {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 [data-theme="dark"] .about-sidebar {
   border-left: 1px solid rgba(58, 63, 71, 0.6);
 }
